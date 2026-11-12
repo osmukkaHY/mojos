@@ -1,0 +1,6 @@
+CREATE TABLE Book (
+  id INTEGER PRIMARY KEY,
+  title TEXT NOT NULL,
+  author TEXT NOT NULL,
+  release_year INTEGER NOT NULL
+);
