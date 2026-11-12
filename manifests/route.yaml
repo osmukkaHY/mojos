@@ -5,7 +5,7 @@ metadata:
   labels:
     router: external
 spec:
-  host: route-miniprojekti-boilerplate.ext.okd-cs-test-0.k8s.cs.helsinki.fi
+  host: route-ohjelmistotuotanto-lahiopetus-2026-3.ext.okd-cs-test-0.k8s.cs.helsinki.fi
   port:
     targetPort: 5001
   to:
