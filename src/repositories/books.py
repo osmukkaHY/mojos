@@ -8,4 +8,3 @@ def add_book(db, title: str, author: str, year: int) -> None:
     sql = text("INSERT INTO Book (title, author, year) VALUES (:title, :author, :year)")
     db.session.execute(sql, {"title": title, "author": author, "year": year})
     db.session.commit()
-    print("added book to db")
