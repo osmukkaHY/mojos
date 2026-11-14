@@ -1,8 +1,12 @@
-from sqlalchemy import create_engine
-from sqlalchemy.engine import Engine
+from flask_sqlalchemy import SQLAlchemy
 
 
-def get_engine(db_uri: str, echo: bool=False) -> Engine:
-    return create_engine(db_uri, echo=echo)
+db = SQLAlchemy()
 
+def create_db(app):
+    """Initializes nonexistent database tables."""
+
+    with app.app_context():
+        db.create_all()
+    print("created db tables:", db.metadata.tables.keys())
 

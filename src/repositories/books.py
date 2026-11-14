@@ -1,13 +1,11 @@
-from sqlalchemy import select
-from sqlalchemy.engine import Engine
-from sqlalchemy.orm import Session
+from sqlalchemy import text
 
-from src.models.book import Book
+from database import db
 
+def add_book(db, title: str, author: str, year: int) -> None:
+    """Adds a book to the database."""
 
-def add_book(engine: Engine, title: str, author: str, year: int) -> None:
-    with Session(engine) as session:
-        new_book = Book(title=title, author=author, year=year)
-        session.add(new_book)
-        session.commit()
-
+    sql = text("INSERT INTO Book (title, author, year) VALUES (:title, :author, :year)")
+    db.session.execute(sql, {"title": title, "author": author, "year": year})
+    db.session.commit()
+    print("added book to db")
