@@ -1,9 +1,13 @@
+"""Main file for reference tool"""
+
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
 
 @app.route('/', methods=["GET", "POST"])
 def form():
+    """API request for form rendering"""
+
     author = ""
     title = ""
     year = ""
