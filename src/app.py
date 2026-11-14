@@ -29,8 +29,6 @@ def form():
         author = request.form.get("author")
         title = request.form.get("title")
         year = request.form.get("year")
-        add_book(db, author, title, year)
-
 
         print(f"Syötit kirjan: {author}, {title}, {year}")
     return render_template("form.html", author=author, title=title, year=year)
