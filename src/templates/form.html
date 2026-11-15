@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+
+<h2>Syötä kirja</h2>
+
+  <form action="" method="post">
+    <p>
+      Kirjailija: <br />
+      <input type="text" name="author" />
+    </p>
+    <p>
+      Teoksen nimi: <br />
+      <input type="text" name="title" />
+    </p>
+    <p>
+      Julkaisuvuosi: <br />
+      <input type="text" name="year" />
+    </p>
+    <input type="submit" value="Lähetä" />
+  </form>
+
+{% if author or title or year %}
+  <h3>Syötit kirjan:</h3>
+    <p>Kirjailija: {{ author }}</p>
+    <p>Teoksen nimi: {{ title }}</p>
+    <p>Julkaisuvuosi: {{ year }}</p>
+{% endif %}
+
+<h3 style="margin-top: 2rem;">Lisätyt kirjat:</h3>
+<ul>
+{% for book in books %}
+  <li>{{ book.author }}: <em>{{ book.title }}</em> ({{ book.year }})</li>
+{% endfor %}
+</ul>
+
+</html>
