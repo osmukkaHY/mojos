@@ -27,4 +27,11 @@
     <p>Julkaisuvuosi: {{ year }}</p>
 {% endif %}
 
+<h3 style="margin-top: 2rem;">Lisätyt kirjat:</h3>
+<ul>
+{% for book in books %}
+  <li>{{ book.author }}: <em>{{ book.title }}</em> ({{ book.year }})</li>
+{% endfor %}
+</ul>
+
 </html>

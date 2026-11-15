@@ -5,7 +5,7 @@ from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 
-from repositories.books import add_book
+from repositories.books import add_book, get_books
 from models.book import Book
 from database import db, create_db
 
@@ -31,7 +31,14 @@ def form():
         year = request.form.get("year")
 
         print(f"Syötit kirjan: {author}, {title}, {year}")
-    return render_template("form.html", author=author, title=title, year=year)
+        add_book(db, title, author, int(year))
+
+    return render_template(
+        "form.html",
+        author=author,
+        title=title,
+        year=year,
+        books=get_books())
 
 if __name__ == '__main__':
     app.run()
