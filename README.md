@@ -1,5 +1,7 @@
 -Linkki backlogiin: https://github.com/users/osmukkaHY/projects/1
 
+Linkki sovellukseen klusterilla https://route-ohjelmistotuotanto-lahiopetus-2026-3.ext.okd-cs-test-0.k8s.cs.helsinki.fi 
+
 
 ## Definition of Done
   ### Testikattavuus
