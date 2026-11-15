@@ -1,7 +1,7 @@
 name: CI
 
 env:
-  DATABASE_URL: sqlite:///test.db
+  DATABASE_URI: sqlite:///test.db
   TEST_ENV: true
   SECRET_KEY: sekret
 
@@ -24,3 +24,10 @@ jobs:
           enable-cache: true
       - name: Install dependencies
         run: uv sync
+      - name: Install Chromium
+        run: uv run rfbrowser install --with-deps chromium
+      - name: Start app and run Robot tests
+        run: |
+          uv run python src/index.py &
+          sleep 2
+          uv run robot --variable HEADLESS:true src/tests/robot
