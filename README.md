@@ -1,4 +1,5 @@
 -Linkki backlogiin: https://github.com/users/osmukkaHY/projects/1
+-Linkki pelisääntöihin: https://github.com/osmukkaHY/mojos/blob/main/pelisaannot.md
 
 Linkki sovellukseen klusterilla https://route-ohjelmistotuotanto-lahiopetus-2026-3.ext.okd-cs-test-0.k8s.cs.helsinki.fi 
 
