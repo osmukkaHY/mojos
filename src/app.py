@@ -1,12 +1,12 @@
 """Main file for reference tool"""
 
+from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
-from flask_sqlalchemy import SQLAlchemy
-from os import getenv
+#from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books
-from models.book import Book
+#from models.book import Book
 from database import db, create_db
 
 
@@ -17,6 +17,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
 db.init_app(app)
 create_db(app)
+
 
 @app.route('/', methods=["GET", "POST"])
 def form():
@@ -39,6 +40,7 @@ def form():
         title=title,
         year=year,
         books=get_books())
+
 
 if __name__ == '__main__':
     app.run()
