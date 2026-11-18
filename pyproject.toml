@@ -13,6 +13,9 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "autopep8>=2.3.2",
+    "pre-commit>=4.7.0",
+    "pylint>=4.1.4",
     "pytest>=9.2.0",
     "robotframework-browser>=21.0.0",
     "robotframework-browser-batteries==21.0.0",
