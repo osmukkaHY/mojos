@@ -15,4 +15,4 @@ class Book(db.Model):
     title: Mapped[str] = mapped_column(Text)
     author: Mapped[str] = mapped_column(Text)
     year: Mapped[int] = mapped_column(Integer)
-    publisher: Mapped[str] = mapped_column(Integer)
+    publisher: Mapped[str] = mapped_column(Text)
