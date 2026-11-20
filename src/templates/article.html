@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Lisää artikkeli</title>
+    </head>
+    
+    <body>
+      <h2>Syötä artikkeli</h2>
+      <small style="color: grey;">Täytä tiedot kenttien esimerkkien mukaisesti.</small>
+
+      <form action="/article" method="post">
+        <p>
+          Otsikko: <br />
+          <input type="text" name="title" placeholder="Artikkelin virallinen nimi" required/>
+        </p>
+        <p>
+          Kirjoittaja: <br />
+          <input type="text" name="author" placeholder="Sukunimi Etunimi" required/>
+          <br /><small style="color: #666;">Erota useat kirjoittajat pilkulla.</small>
+        </p>
+        <p>
+          Vuosiluku: <br />
+          <input type="text" name="year" placeholder="VVVV (esim. 2026)" required/>
+        </p>
+        <p>
+          Tiedejulkaisu: <br />
+          <input type="text" name="journal" placeholder="Lehden tai julkaisun nimi" required/>
+        </p>
+        <p>
+          Sivut: <br />
+          <input type="text" name="pages" placeholder="Esim. 45–52" required/>
+        </p>
+        <input type="submit" value="Tallenna"/>
+      </form>
+      <form action="/" method="get">
+        <p>
+          <button type="submit">Etusivu</button>
+        </p>
+      </form>
+    </body>
+</html>
