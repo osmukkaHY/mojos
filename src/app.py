@@ -3,10 +3,10 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
-#from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books
-#from models.book import Book
+# from models.book import Book
 from database import db, create_db
 
 
@@ -19,7 +19,13 @@ db.init_app(app)
 create_db(app)
 
 
-@app.route('/', methods=["GET", "POST"])
+@app.route("/")
+def index():
+    """Render the front page."""
+    return render_template("index.html")
+
+
+@app.route("/form", methods=["GET", "POST"])
 def form():
     """API request for form rendering"""
 
@@ -40,6 +46,15 @@ def form():
         title=title,
         year=year,
         books=get_books())
+
+
+@app.route("/inproceedings", methods=["GET", "POST"])
+def inproceedings():
+    """Render the conference publication form."""
+    if request.method == "POST":
+        pass
+
+    return render_template("inproceeding.html")
 
 
 if __name__ == '__main__':
