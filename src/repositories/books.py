@@ -3,12 +3,12 @@ from sqlalchemy import text
 from database import db
 
 
-def add_book(db, title: str, author: str, year: int) -> None:
+def add_book(db, reference_name: str, title: str, author: str, year: int, publisher: str) -> None:
     """Adds a book to the database."""
 
     sql = text(
-        "INSERT INTO Book (title, author, year) VALUES (:title, :author, :year)")
-    db.session.execute(sql, {"title": title, "author": author, "year": year})
+        "INSERT INTO Book (reference_name, title, author, year, publisher) VALUES (:reference_name, :title, :author, :year, :publisher)")
+    db.session.execute(sql, {"reference_name": reference_name, "title": title, "author": author, "year": year, "publisher": publisher})
     db.session.commit()
 
 
