@@ -8,13 +8,13 @@
       <h2>Syötä artikkeli</h2>
       <small style="color: grey;">Täytä tiedot kenttien esimerkkien mukaisesti.</small>
 
-      <form action="/article" method="post">
+      <form action="" method="post">
         <p>
           Viiteavain: <br />
           <input type="text" name="reference_name"  placeholder="Käytetään viite komennossa" required />
         </p>
         <p>
-          Otsikko: <br />
+          Nimi: <br />
           <input type="text" name="title" placeholder="Artikkelin virallinen nimi" required/>
         </p>
         <p>
@@ -23,7 +23,7 @@
           <br /><small style="color: #666;">Erota useat kirjoittajat pilkulla.</small>
         </p>
         <p>
-          Vuosiluku: <br />
+          Julkaisuvuosi: <br />
           <input type="text" name="year" placeholder="VVVV (esim. 2026)" required/>
         </p>
         <p>
@@ -41,5 +41,12 @@
           <button type="submit">Etusivu</button>
         </p>
       </form>
+
+      {% if author or title or year %}
+      <h3>Syötit julkaisun:</h3>
+          <p>Kirjoittaja: {{ author }}</p>
+          <p>Nimi: {{ title }}</p>
+          <p>Julkaisuvuosi: {{ year }}</p>
+      {% endif %}
     </body>
 </html>
