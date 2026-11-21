@@ -18,4 +18,3 @@ class Inproceedings(db.Model):
     year: Mapped[int] = mapped_column(Integer)
     series: Mapped[str] = mapped_column(Text)
     pages: Mapped[str] = mapped_column(Text)
-
