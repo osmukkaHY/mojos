@@ -35,7 +35,7 @@ def form():
     year = ""
     publisher = ""
     if request.method == "POST":
-        reference_name = request.form.get("refence_name")
+        reference_name = request.form.get("reference_name")
         author = request.form.get("author")
         title = request.form.get("title")
         year = request.form.get("year")
