@@ -3,10 +3,10 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
-# from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books
-# from models.book import Book
+#from models.book import Book
 from database import db, create_db
 
 
@@ -25,26 +25,31 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/form", methods=["GET", "POST"])
+@app.route("/book", methods=["GET", "POST"])
 def form():
     """API request for form rendering"""
 
+    reference_name = ""
     author = ""
     title = ""
     year = ""
+    publisher = ""
     if request.method == "POST":
+        reference_name = request.form.get("reference_name")
         author = request.form.get("author")
         title = request.form.get("title")
         year = request.form.get("year")
+        publisher = request.form.get("publisher")
 
-        print(f"Syötit kirjan: {author}, {title}, {year}")
-        add_book(db, title, author, int(year))
+        add_book(db, reference_name, title, author, int(year), publisher)
 
     return render_template(
-        "form.html",
+        "book.html",
+        reference_name=reference_name,
         author=author,
         title=title,
         year=year,
+        publisher=publisher,
         books=get_books())
 
 

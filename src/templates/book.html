@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+
+<h2>Syötä kirja</h2>
+
+  <form action="" method="post">
+    <p>
+      Viiteavain: <br />
+      <input type="text" name="reference_name" required />
+    </p>
+    <p>
+      Kirjoittaja: <br />
+      <input type="text" name="author" required />
+    </p>
+    <p>
+      Nimi: <br />
+      <input type="text" name="title" required />
+    </p>
+    <p>
+      Julkaisuvuosi: <br />
+      <input type="number" name="year" required />
+    </p>
+    <p>
+      Kustantamo: <br />
+      <input type="text" name="publisher" required/>
+    </p>
+    <input type="submit" value="Lähetä" />
+  </form>
+  <p>
+    <a href="/">Takaisin etusivulle</a>
+  </p>
+
+
+{% if author or title or year %}
+  <h3>Syötit julkaisun:</h3>
+    <p>Kirjoittaja: {{ author }}</p>
+    <p>Nimi: {{ title }}</p>
+    <p>Julkaisuvuosi: {{ year }}</p>
+{% endif %}

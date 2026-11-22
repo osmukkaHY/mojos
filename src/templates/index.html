@@ -4,8 +4,29 @@
   <body>
     <h1>Kirjasto</h1>
     <ul>
-      <li><a href="/form">Lisää kirja</a></li>
+      <li><a href="/book">Lisää kirja</a></li>
       <li><a href="/inproceedings">Lisää konferenssijulkaisu</a></li>
+    </ul>
+
+    <h3 style="margin-top: 2rem;">Lisätyt kirjat:</h3>
+    <ul>
+    {% for book in books %}
+      <li>{{ book.reference_name }} {{ book.author }}: <em>{{ book.title }}</em> ({{ book.year }}) {{ book.publisher }}</li>
+    {% endfor %}
+    </ul>
+
+    <h3 style="margin-top: 2rem;">Lisätyt artikkelit:</h3>
+    <ul>
+    {% for article in articles %}
+      <li>{{ article.reference_name }} {{ article.author }}: <em>{{ article.title }}</em> ({{ article.year }}) {{ article.journal }} {{ article.pages }}</li>
+    {% endfor %}
+    </ul>
+
+    <h3 style="margin-top: 2rem;">Lisätyt konferenssijulkaisut:</h3>
+    <ul>
+    {% for inproceeding in inproceedins %}
+      <li>{{ inproceeding.reference_name }} {{ inproceeding.author }}: <em>{{ inproceeding.title }}</em> ({{ inproceeding.year }}) {{ inproceeding.series }} {{ inproceeding.pages }}</li>
+    {% endfor %}
     </ul>
   </body>
 </html>
