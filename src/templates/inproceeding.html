@@ -4,6 +4,10 @@
 
 <h2>Syötä konferenssijulkaisu</h2>
 
+  {% if error %}
+  <p style="color: red;">{{ error }}</p>
+  {% endif %}
+
   <form action="" method="post">
     <p>
       Viiteavain: <br />
