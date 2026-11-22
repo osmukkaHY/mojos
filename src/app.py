@@ -28,7 +28,12 @@ create_db(app)
 @app.route("/")
 def index():
     """Render the front page."""
-    return render_template("index.html")
+    return render_template(
+        "index.html",
+        books=get_books(),
+        articles=get_articles(),
+        inproceedings=get_inproceedings()
+    )
 
 
 @app.route("/book", methods=["GET", "POST"])

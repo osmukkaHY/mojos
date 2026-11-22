@@ -25,7 +25,7 @@
 
     <h3 style="margin-top: 2rem;">Lisätyt konferenssijulkaisut:</h3>
     <ul>
-    {% for inproceeding in inproceedins %}
+    {% for inproceeding in inproceedings %}
       <li>{{ inproceeding.reference_name }} {{ inproceeding.author }}: <em>{{ inproceeding.title }}</em> ({{ inproceeding.year }}) {{ inproceeding.series }} {{ inproceeding.pages }}</li>
     {% endfor %}
     </ul>
