@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+      <title>Lisää artikkeli</title>
+    </head>
+    
+    <body>
+      <h2>Syötä artikkeli</h2>
+      {% if error %}
+      <p style="color: red;">{{ error }}</p>
+      {% endif %}
+      <small style="color: grey;">Täytä tiedot kenttien esimerkkien mukaisesti.</small>
+
+      <form action="" method="post">
+        <p>
+          Viiteavain: <br />
+          <input type="text" name="reference_name"  placeholder="Käytetään viite komennossa" required />
+        </p>
+        <p>
+          Nimi: <br />
+          <input type="text" name="title" placeholder="Artikkelin virallinen nimi" required/>
+        </p>
+        <p>
+          Kirjoittaja: <br />
+          <input type="text" name="author" placeholder="Sukunimi Etunimi" required/>
+          <br /><small style="color: #666;">Erota useat kirjoittajat pilkulla.</small>
+        </p>
+        <p>
+          Julkaisuvuosi: <br />
+          <input type="text" name="year" placeholder="VVVV (esim. 2026)" required/>
+        </p>
+        <p>
+          Tiedejulkaisu: <br />
+          <input type="text" name="journal" placeholder="Lehden tai julkaisun nimi" required/>
+        </p>
+        <p>
+          Sivut: <br />
+          <input type="text" name="pages" placeholder="Esim. 45–52" required/>
+        </p>
+        <input type="submit" value="Tallenna"/>
+      </form>
+      <form action="/" method="get">
+        <p>
+          <button type="submit">Etusivu</button>
+        </p>
+      </form>
+
+      {% if not error and (author or title or year) %}
+      <h3>Syötit julkaisun:</h3>
+          <p>Kirjoittaja: {{ author }}</p>
+          <p>Nimi: {{ title }}</p>
+          <p>Julkaisuvuosi: {{ year }}</p>
+      {% endif %}
+    </body>
+</html>

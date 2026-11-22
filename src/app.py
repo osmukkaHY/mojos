@@ -3,18 +3,22 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
-# from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books
-# from models.book import Book
+from models.book import Book
+from repositories.articles import add_article, get_articles
+from models.article import Article
 from database import db, create_db
+from validators import parse_year
 
 
 load_dotenv()
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
+# app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
 create_db(app)
 
@@ -25,26 +29,39 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/form", methods=["GET", "POST"])
-def form():
+@app.route("/book", methods=["GET", "POST"])
+def book():
     """API request for form rendering"""
 
+    reference_name = ""
     author = ""
     title = ""
     year = ""
+    publisher = ""
+    error_message = None
     if request.method == "POST":
+        reference_name = request.form.get("reference_name")
         author = request.form.get("author")
         title = request.form.get("title")
         year = request.form.get("year")
+        publisher = request.form.get("publisher")
 
-        print(f"Syötit kirjan: {author}, {title}, {year}")
-        add_book(db, title, author, int(year))
+        try:
+            year_int = parse_year(year)
+        except ValueError as err:
+            error_message = str(err)
+
+        else:
+            add_book(db, reference_name, title, author, year_int, publisher)
 
     return render_template(
-        "form.html",
+        "book.html",
+        reference_name=reference_name,
         author=author,
         title=title,
         year=year,
+        publisher=publisher,
+        error=error_message,
         books=get_books())
 
 
@@ -55,6 +72,41 @@ def inproceedings():
         pass
 
     return render_template("inproceeding.html")
+
+
+@app.route("/article", methods=["GET", "POST"])
+def article():
+    """Render the article form and recieve form inputs"""
+    reference_name = ""
+    title = ""
+    author = ""
+    year = ""
+    journal = ""
+    pages = ""
+    error_message = None
+
+    if request.method == "POST":
+        reference_name = request.form.get("reference_name")
+        title = request.form.get("title")
+        author = request.form.get("author")
+        year = request.form.get("year")
+        journal = request.form.get("journal")
+        pages = request.form.get("pages")
+
+        try:
+            year_int = parse_year(year)
+        except ValueError as err:
+            error_message = str(err)
+        else:
+            add_article(db, reference_name, title,
+                        author, year_int, journal, pages)
+
+    return render_template(
+        "article.html",
+        author=author,
+        title=title,
+        year=year,
+        error=error_message)
 
 
 if __name__ == '__main__':
