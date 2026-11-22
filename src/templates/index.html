@@ -16,6 +16,9 @@
         <form action="/book/{{ book.id }}/delete" method="post" style="display: inline;">
           <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän kirjan?')">Poista</button>
         </form>
+        <form action="/book/{{ book.id }}/edit" method="get" style="display: inline;">
+          <button type="submit">Muokkaa</button>
+        </form>
       </li>
     {% endfor %}
     </ul>
@@ -27,6 +30,9 @@
         <form action="/article/{{ article.id }}/delete" method="post" style="display: inline;">
           <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän artikkelin?')">Poista</button>
         </form>
+        <form action="/article/{{ article.id }}/edit" method="get" style="display: inline;">
+          <button type="submit">Muokkaa</button>
+        </form>
       </li>
     {% endfor %}
     </ul>
@@ -37,6 +43,9 @@
       <li>{{ inproceeding.reference_name }} {{ inproceeding.author }}: <em>{{ inproceeding.title }}</em> ({{ inproceeding.year }}) {{ inproceeding.series }} {{ inproceeding.pages }}
         <form action="/inproceedings/{{ inproceeding.id }}/delete" method="post" style="display: inline;">
           <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän konferenssijulkaisun?')">Poista</button>
+        </form>
+        <form action="/inproceedings/{{ inproceeding.id }}/edit" method="get" style="display: inline;">
+          <button type="submit">Muokkaa</button>
         </form>
       </li>
     {% endfor %}

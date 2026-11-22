@@ -21,8 +21,27 @@ def get_articles():
     """
 
     return db.session.execute(
-        text("SELECT id, title, author, year FROM Article ORDER BY id")
+        text("SELECT id, reference_name, title, author, year, journal, pages "
+             "FROM Article ORDER BY id")
     ).mappings().all()
+
+
+def get_article(db, article_id: int):
+    """Gets a single article from the database.
+
+    Args:
+        db: The database connection.
+        article_id: The ID of the article to get.
+
+    Returns:
+        A dictionary representing the article, or None if not found.
+    """
+
+    return db.session.execute(
+        text("SELECT id, reference_name, title, author, year, journal, pages "
+             "FROM Article WHERE id = :id"),
+        {"id": article_id},
+    ).mappings().first()
 
 
 def delete_article(db, article_id: int):
@@ -30,5 +49,26 @@ def delete_article(db, article_id: int):
     db.session.execute(
         text("DELETE FROM Article WHERE id = :id"),
         {"id": article_id}
+    )
+    db.session.commit()
+
+
+def edit_article(
+    db,
+    article_id: int,
+    reference_name: str,
+    title: str,
+    author: str,
+    year: int,
+    journal: str,
+    pages: str,
+):
+    """Edit an article in the database."""
+    db.session.execute(
+        text("UPDATE Article SET reference_name = :reference_name, "
+             "title = :title, author = :author, year = :year, "
+             "journal = :journal, pages = :pages WHERE id = :id"),
+        {"id": article_id, "reference_name": reference_name, "title": title,
+         "author": author, "year": year, "journal": journal, "pages": pages}
     )
     db.session.commit()

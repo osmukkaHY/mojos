@@ -2,45 +2,45 @@
 
 <html>
 
-<h2>Syötä konferenssijulkaisu</h2>
+<h2>{% if is_edit %}Muokkaa konferenssijulkaisua{% else %}Syötä konferenssijulkaisu{% endif %}</h2>
 
   {% if error %}
   <p style="color: red;">{{ error }}</p>
   {% endif %}
 
-  <form action="" method="post">
+  <form action="{% if is_edit %}{{ url_for('edit_inproceedings_route', inproceedings_id=inproceeding.id) }}{% else %}{{ url_for('inproceedings') }}{% endif %}" method="post">
     <p>
       Viiteavain: <br />
-      <input type="text" name="reference_name" required />
+      <input type="text" name="reference_name" value="{% if is_edit %}{{ reference_name }}{% else %}{{ reference_name }}{% endif %}" required />
     </p>
     <p>
       Kirjoittaja: <br />
-      <input type="text" name="author" required />
+      <input type="text" name="author" value="{% if is_edit %}{{ author }}{% else %}{{ author }}{% endif %}" required />
     </p>
     <p>
       Nimi: <br />
-      <input type="text" name="title" required />
+      <input type="text" name="title" value="{% if is_edit %}{{ title }}{% else %}{{ title }}{% endif %}" required />
     </p>
     <p>
       Julkaisuvuosi: <br />
-      <input type="number" name="year" required />
+      <input type="number" name="year" value="{% if is_edit %}{{ year }}{% else %}{{ year }}{% endif %}" required />
     </p>
     <p>
       Sarja: <br />
-      <input type="text" name="series" />
+      <input type="text" name="series" value="{% if is_edit %}{{ series }}{% else %}{{ series }}{% endif %}" />
     </p>
     <p>
       Sivut: <br />
-      <input type="text" name="pages" />
+      <input type="text" name="pages" value="{% if is_edit %}{{ pages }}{% else %}{{ pages }}{% endif %}" />
     </p>
-    <input type="submit" value="Lähetä" />
+    <input type="submit" value="{% if is_edit %}Päivitä{% else %}Lähetä{% endif %}" />
   </form>
   <p>
     <a href="/">Takaisin etusivulle</a>
 </p>
 
 
-{% if author or title or year %}
+{% if (author or title or year) and not is_edit %}
   <h3>Syötit julkaisun:</h3>
     <p>Kirjoittaja: {{ author }}</p>
     <p>Nimi: {{ title }}</p>

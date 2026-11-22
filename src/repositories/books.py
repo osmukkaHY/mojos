@@ -21,8 +21,25 @@ def get_books():
     """
 
     return db.session.execute(
-        text("SELECT id, title, author, year FROM Book ORDER BY id")
+        text("SELECT id, reference_name, title, author, year, publisher FROM Book ORDER BY id")
     ).mappings().all()
+
+
+def get_book(db, book_id: int):
+    """Gets a single book from the database.
+
+    Args: 
+        db: The database connection.
+        book_id (int): The id of the book to get.
+
+    Returns: 
+        A dictionary representing the book, or None if not found.
+    """
+
+    return db.session.execute(
+        text("SELECT id, reference_name, title, author, year, publisher FROM Book WHERE id = :id"),
+        {"id": book_id},
+    ).mappings().first()
 
 
 def delete_book(db, book_id: int):
@@ -30,5 +47,15 @@ def delete_book(db, book_id: int):
     db.session.execute(
         text("DELETE FROM Book WHERE id = :id"),
         {"id": book_id}
+    )
+    db.session.commit()
+
+
+def edit_book(db, book_id: int, reference_name: str, title: str, author: str, year: int, publisher: str):
+    """Edit a book in the database."""
+    db.session.execute(
+        text("UPDATE Book SET reference_name = :reference_name, title = :title, author = :author, year = :year, publisher = :publisher WHERE id = :id"),
+        {"id": book_id, "reference_name": reference_name, "title": title,
+            "author": author, "year": year, "publisher": publisher}
     )
     db.session.commit()
