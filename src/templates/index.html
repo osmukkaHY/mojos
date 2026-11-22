@@ -12,7 +12,11 @@
     <h3 style="margin-top: 2rem;">Lisätyt kirjat:</h3>
     <ul>
     {% for book in books %}
-      <li>{{ book.reference_name }} {{ book.author }}: <em>{{ book.title }}</em> ({{ book.year }}) {{ book.publisher }}</li>
+      <li>{{ book.reference_name }} {{ book.author }}: <em>{{ book.title }}</em> ({{ book.year }}) {{ book.publisher }}
+        <form action="/book/{{ book.id }}/delete" method="post" style="display: inline;">
+          <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän kirjan?')">Poista</button>
+        </form>
+      </li>
     {% endfor %}
     </ul>
 

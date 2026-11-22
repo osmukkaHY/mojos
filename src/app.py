@@ -2,10 +2,10 @@
 
 from os import getenv
 from dotenv import load_dotenv
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
-from repositories.books import add_book, get_books
+from repositories.books import add_book, get_books, delete_book
 from models.book import Book
 from repositories.articles import add_article, get_articles
 from models.article import Article
@@ -145,6 +145,13 @@ def article():
         title=title,
         year=year,
         error=error_message)
+
+
+@app.route("/book/<int:book_id>/delete", methods=["POST"])
+def delete_book_route(book_id):
+    """Delete a book."""
+    delete_book(db, book_id)
+    return redirect(url_for("index"))
 
 
 if __name__ == '__main__':
