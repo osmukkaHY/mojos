@@ -16,7 +16,7 @@ def get_books():
     """Gets all books from the database.
 
     Returns: 
-        A list of dictionaries, each representing a book with keys 'id', 'title', 'author', and 'year'.
+        A list of dictionaries, each representing a book with keys 'id', 'reference_name', 'title', 'author', 'year' and 'publisher'.
     """
 
     return db.session.execute(
