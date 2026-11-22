@@ -22,3 +22,15 @@ def add_inproceedings(db, reference_name: str, title: str, author: str, year: in
         },
     )
     db.session.commit()
+
+
+def get_inproceedings():
+    """Gets all inproceedings entries from the database.
+
+    Returns:
+        A list of rows containing each entry's id, title, author, and year.
+    """
+
+    return db.session.execute(
+        text("SELECT id, title, author, year FROM inproceedings ORDER BY id")
+    ).mappings().all()

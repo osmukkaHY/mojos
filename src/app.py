@@ -9,6 +9,8 @@ from repositories.books import add_book, get_books
 from models.book import Book
 from repositories.articles import add_article, get_articles
 from models.article import Article
+from repositories.inproceedings import add_inproceedings, get_inproceedings
+from models.inproceedings import Inproceedings
 from database import db, create_db
 from validators import parse_year
 
@@ -17,8 +19,8 @@ load_dotenv()
 
 
 app = Flask(__name__)
-# app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
 create_db(app)
 
@@ -68,10 +70,41 @@ def book():
 @app.route("/inproceedings", methods=["GET", "POST"])
 def inproceedings():
     """Render the conference publication form."""
-    if request.method == "POST":
-        pass
+    reference_name = ""
+    author = ""
+    title = ""
+    year = ""
+    series = ""
+    pages = ""
+    error_message = None
 
-    return render_template("inproceeding.html")
+    if request.method == "POST":
+        reference_name = request.form.get("reference_name")
+        author = request.form.get("author")
+        title = request.form.get("title")
+        year = request.form.get("year")
+        series = request.form.get("series", "")
+        pages = request.form.get("pages", "")
+
+        try:
+            year_int = parse_year(year)
+        except ValueError as err:
+            error_message = str(err)
+        else:
+            add_inproceedings(
+                db, reference_name, title, author, year_int, series, pages
+            )
+
+    return render_template(
+        "inproceeding.html",
+        reference_name=reference_name,
+        author=author,
+        title=title,
+        year=year,
+        series=series,
+        pages=pages,
+        error=error_message,
+    )
 
 
 @app.route("/article", methods=["GET", "POST"])
