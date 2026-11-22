@@ -6,6 +6,9 @@
     
     <body>
       <h2>Syötä artikkeli</h2>
+      {% if error %}
+      <p style="color: red;">{{ error }}</p>
+      {% endif %}
       <small style="color: grey;">Täytä tiedot kenttien esimerkkien mukaisesti.</small>
 
       <form action="" method="post">
@@ -42,7 +45,7 @@
         </p>
       </form>
 
-      {% if author or title or year %}
+      {% if not error and (author or title or year) %}
       <h3>Syötit julkaisun:</h3>
           <p>Kirjoittaja: {{ author }}</p>
           <p>Nimi: {{ title }}</p>

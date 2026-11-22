@@ -6,7 +6,9 @@ from flask import Flask, request, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books
-#from models.book import Book
+from models.book import Book
+from repositories.articles import add_article, get_articles
+from models.article import Article
 from database import db, create_db
 from validators import parse_year
 
@@ -15,7 +17,7 @@ load_dotenv()
 
 
 app = Flask(__name__)
-#app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
+# app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
 create_db(app)
@@ -52,9 +54,6 @@ def book():
         else:
             add_book(db, reference_name, title, author, year_int, publisher)
 
-        
-
-
     return render_template(
         "book.html",
         reference_name=reference_name,
@@ -73,6 +72,41 @@ def inproceedings():
         pass
 
     return render_template("inproceeding.html")
+
+
+@app.route("/article", methods=["GET", "POST"])
+def article():
+    """Render the article form and recieve form inputs"""
+    reference_name = ""
+    title = ""
+    author = ""
+    year = ""
+    journal = ""
+    pages = ""
+    error_message = None
+
+    if request.method == "POST":
+        reference_name = request.form.get("reference_name")
+        title = request.form.get("title")
+        author = request.form.get("author")
+        year = request.form.get("year")
+        journal = request.form.get("journal")
+        pages = request.form.get("pages")
+
+        try:
+            year_int = parse_year(year)
+        except ValueError as err:
+            error_message = str(err)
+        else:
+            add_article(db, reference_name, title,
+                        author, year_int, journal, pages)
+
+    return render_template(
+        "article.html",
+        author=author,
+        title=title,
+        year=year,
+        error=error_message)
 
 
 if __name__ == '__main__':
