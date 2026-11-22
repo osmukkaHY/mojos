@@ -6,11 +6,11 @@ from flask import Flask, request, render_template, redirect, url_for
 # from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books, delete_book
-# from models.book import Book
+from models.book import Book
 from repositories.articles import add_article, get_articles, delete_article
-# from models.article import Article
+from models.article import Article
 from repositories.inproceedings import add_inproceedings, get_inproceedings, delete_inproceedings
-# from models.inproceedings import Inproceedings
+from models.inproceedings import Inproceedings
 from database import db, create_db
 from validators import parse_year
 
