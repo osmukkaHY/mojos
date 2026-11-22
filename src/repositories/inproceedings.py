@@ -34,3 +34,12 @@ def get_inproceedings():
     return db.session.execute(
         text("SELECT id, title, author, year FROM inproceedings ORDER BY id")
     ).mappings().all()
+
+
+def delete_inproceedings(db, inproceedings_id: int):
+    """Delete an inproceedings from the database."""
+    db.session.execute(
+        text("DELETE FROM inproceedings WHERE id = :id"),
+        {"id": inproceedings_id}
+    )
+    db.session.commit()

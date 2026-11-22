@@ -34,7 +34,11 @@
     <h3 style="margin-top: 2rem;">Lisätyt konferenssijulkaisut:</h3>
     <ul>
     {% for inproceeding in inproceedings %}
-      <li>{{ inproceeding.reference_name }} {{ inproceeding.author }}: <em>{{ inproceeding.title }}</em> ({{ inproceeding.year }}) {{ inproceeding.series }} {{ inproceeding.pages }}</li>
+      <li>{{ inproceeding.reference_name }} {{ inproceeding.author }}: <em>{{ inproceeding.title }}</em> ({{ inproceeding.year }}) {{ inproceeding.series }} {{ inproceeding.pages }}
+        <form action="/inproceedings/{{ inproceeding.id }}/delete" method="post" style="display: inline;">
+          <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän konferenssijulkaisun?')">Poista</button>
+        </form>
+      </li>
     {% endfor %}
     </ul>
   </body>

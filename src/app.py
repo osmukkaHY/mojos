@@ -3,14 +3,14 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, redirect, url_for
-#from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books, delete_book
-#from models.book import Book
+# from models.book import Book
 from repositories.articles import add_article, get_articles, delete_article
-#from models.article import Article
-from repositories.inproceedings import add_inproceedings, get_inproceedings
-#from models.inproceedings import Inproceedings
+# from models.article import Article
+from repositories.inproceedings import add_inproceedings, get_inproceedings, delete_inproceedings
+# from models.inproceedings import Inproceedings
 from database import db, create_db
 from validators import parse_year
 
@@ -158,6 +158,13 @@ def delete_book_route(book_id):
 def delete_article_route(article_id):
     """Delete an article."""
     delete_article(db, article_id)
+    return redirect(url_for("index"))
+
+
+@app.route("/inproceedings/<int:inproceedings_id>/delete", methods=["POST"])
+def delete_inproceedings_route(inproceedings_id):
+    """Delete an inproceedings."""
+    delete_inproceedings(db, inproceedings_id)
     return redirect(url_for("index"))
 
 
