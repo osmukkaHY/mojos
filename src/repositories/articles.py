@@ -23,3 +23,12 @@ def get_articles():
     return db.session.execute(
         text("SELECT id, title, author, year FROM Article ORDER BY id")
     ).mappings().all()
+
+
+def delete_article(db, article_id: int):
+    """Delete an article from the database."""
+    db.session.execute(
+        text("DELETE FROM Article WHERE id = :id"),
+        {"id": article_id}
+    )
+    db.session.commit()

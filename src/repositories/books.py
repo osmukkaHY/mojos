@@ -23,3 +23,12 @@ def get_books():
     return db.session.execute(
         text("SELECT id, title, author, year FROM Book ORDER BY id")
     ).mappings().all()
+
+
+def delete_book(db, book_id: int):
+    """Delete a book from the database."""
+    db.session.execute(
+        text("DELETE FROM Book WHERE id = :id"),
+        {"id": book_id}
+    )
+    db.session.commit()
