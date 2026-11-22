@@ -34,6 +34,7 @@ def form():
     title = ""
     year = ""
     publisher = ""
+    error_message = None
     if request.method == "POST":
         reference_name = request.form.get("reference_name")
         author = request.form.get("author")
@@ -41,7 +42,16 @@ def form():
         year = request.form.get("year")
         publisher = request.form.get("publisher")
 
-        add_book(db, reference_name, title, author, int(year), publisher)
+        try:
+            year_int = int(year)
+            if year_int < 1800 or year_int > 2026:
+                raise ValueError
+
+            add_book(db, reference_name, title, author, year_int, publisher)
+
+        except ValueError:
+            error_message = "Vuoden pitää olla luku väliltä 1800-2026"
+
 
     return render_template(
         "book.html",
@@ -50,6 +60,7 @@ def form():
         title=title,
         year=year,
         publisher=publisher,
+        error=error_message,
         books=get_books())
 
 
