@@ -3,18 +3,20 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template
-#from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books
 #from models.book import Book
 from database import db, create_db
+from validators import parse_year
 
 
 load_dotenv()
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
+#app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
 create_db(app)
 
@@ -26,7 +28,7 @@ def index():
 
 
 @app.route("/book", methods=["GET", "POST"])
-def form():
+def book():
     """API request for form rendering"""
 
     reference_name = ""
@@ -34,6 +36,7 @@ def form():
     title = ""
     year = ""
     publisher = ""
+    error_message = None
     if request.method == "POST":
         reference_name = request.form.get("reference_name")
         author = request.form.get("author")
@@ -41,7 +44,16 @@ def form():
         year = request.form.get("year")
         publisher = request.form.get("publisher")
 
-        add_book(db, reference_name, title, author, int(year), publisher)
+        try:
+            year_int = parse_year(year)
+        except ValueError as err:
+            error_message = str(err)
+
+        else:
+            add_book(db, reference_name, title, author, year_int, publisher)
+
+        
+
 
     return render_template(
         "book.html",
@@ -50,6 +62,7 @@ def form():
         title=title,
         year=year,
         publisher=publisher,
+        error=error_message,
         books=get_books())
 
 
