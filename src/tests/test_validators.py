@@ -5,6 +5,7 @@ from datetime import date
 
 from validators import MIN_YEAR, parse_year
 
+
 class TestParseYear(unittest.TestCase):
     def setUp(self):
         self.this_year = date.today().year
@@ -24,7 +25,7 @@ class TestParseYear(unittest.TestCase):
 
     def test_year_above_limit_error(self):
         with self.assertRaises(ValueError):
-            parse_year(str(self.this_year + 1))    
+            parse_year(str(self.this_year + 1))
 
     def test_non_int_input_error(self):
         for value in ["", "kirja", "2000.5", None]:

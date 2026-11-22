@@ -4,6 +4,7 @@ from datetime import date
 
 MIN_YEAR = 1800
 
+
 def parse_year(value):
     """Return the year as an integer or raise ValueError, if it's invalid."""
     max_year = date.today().year

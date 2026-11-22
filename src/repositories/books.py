@@ -8,7 +8,8 @@ def add_book(db, reference_name: str, title: str, author: str, year: int, publis
 
     sql = text(
         "INSERT INTO Book (reference_name, title, author, year, publisher) VALUES (:reference_name, :title, :author, :year, :publisher)")
-    db.session.execute(sql, {"reference_name": reference_name, "title": title, "author": author, "year": year, "publisher": publisher})
+    db.session.execute(sql, {"reference_name": reference_name, "title": title,
+                       "author": author, "year": year, "publisher": publisher})
     db.session.commit()
 
 
