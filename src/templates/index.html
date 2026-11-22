@@ -23,7 +23,11 @@
     <h3 style="margin-top: 2rem;">Lisätyt artikkelit:</h3>
     <ul>
     {% for article in articles %}
-      <li>{{ article.reference_name }} {{ article.author }}: <em>{{ article.title }}</em> ({{ article.year }}) {{ article.journal }} {{ article.pages }}</li>
+      <li>{{ article.reference_name }} {{ article.author }}: <em>{{ article.title }}</em> ({{ article.year }}) {{ article.journal }} {{ article.pages }}
+        <form action="/article/{{ article.id }}/delete" method="post" style="display: inline;">
+          <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän artikkelin?')">Poista</button>
+        </form>
+      </li>
     {% endfor %}
     </ul>
 
