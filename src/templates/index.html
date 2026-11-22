@@ -44,6 +44,9 @@
         <form action="/inproceedings/{{ inproceeding.id }}/delete" method="post" style="display: inline;">
           <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän konferenssijulkaisun?')">Poista</button>
         </form>
+        <form action="/inproceedings/{{ inproceeding.id }}/edit" method="get" style="display: inline;">
+          <button type="submit">Muokkaa</button>
+        </form>
       </li>
     {% endfor %}
     </ul>

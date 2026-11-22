@@ -9,7 +9,7 @@ from repositories.books import add_book, get_books, get_book, delete_book, edit_
 from models.book import Book
 from repositories.articles import add_article, get_articles, get_article, delete_article, edit_article
 from models.article import Article
-from repositories.inproceedings import add_inproceedings, get_inproceedings, delete_inproceedings
+from repositories.inproceedings import add_inproceedings, get_inproceedings, get_inproceeding, delete_inproceedings, edit_inproceeding
 from models.inproceedings import Inproceedings
 from database import db, create_db
 from validators import parse_year
@@ -110,6 +110,7 @@ def inproceedings():
         series=series,
         pages=pages,
         error=error_message,
+        is_edit=False,
     )
 
 
@@ -269,6 +270,58 @@ def delete_inproceedings_route(inproceedings_id):
     """Delete an inproceedings."""
     delete_inproceedings(db, inproceedings_id)
     return redirect(url_for("index"))
+
+
+@app.route("/inproceedings/<int:inproceedings_id>/edit", methods=["GET", "POST"])
+def edit_inproceedings_route(inproceedings_id):
+    """Edit an inproceedings."""
+    inproceeding_to_edit = get_inproceeding(db, inproceedings_id)
+    if inproceeding_to_edit is None:
+        abort(404)
+
+    if request.method == "POST":
+        reference_name = request.form.get("reference_name")
+        title = request.form.get("title")
+        author = request.form.get("author")
+        year = request.form.get("year")
+        series = request.form.get("series", "")
+        pages = request.form.get("pages", "")
+
+        try:
+            year_int = parse_year(year)
+        except ValueError as err:
+            error_message = str(err)
+        else:
+            edit_inproceeding(
+                db, inproceedings_id, reference_name, title, author,
+                year_int, series, pages
+            )
+            return redirect(url_for("index"))
+
+        inproceeding_to_edit = {
+            "id": inproceedings_id,
+            "reference_name": reference_name,
+            "title": title,
+            "author": author,
+            "year": year,
+            "series": series,
+            "pages": pages,
+        }
+    else:
+        error_message = None
+
+    return render_template(
+        "inproceeding.html",
+        inproceeding=inproceeding_to_edit,
+        is_edit=True,
+        reference_name=inproceeding_to_edit["reference_name"],
+        author=inproceeding_to_edit["author"],
+        title=inproceeding_to_edit["title"],
+        year=inproceeding_to_edit["year"],
+        series=inproceeding_to_edit["series"],
+        pages=inproceeding_to_edit["pages"],
+        error=error_message,
+    )
 
 
 if __name__ == '__main__':
