@@ -6,11 +6,11 @@ from flask import Flask, request, render_template, redirect, url_for, abort
 # from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books, get_book, delete_book, edit_book
-# from models.book import Book
-from repositories.articles import add_article, get_articles, delete_article
-# from models.article import Article
+from models.book import Book
+from repositories.articles import add_article, get_articles, get_article, delete_article, edit_article
+from models.article import Article
 from repositories.inproceedings import add_inproceedings, get_inproceedings, delete_inproceedings
-# from models.inproceedings import Inproceedings
+from models.inproceedings import Inproceedings
 from database import db, create_db
 from validators import parse_year
 
@@ -69,7 +69,6 @@ def book():
         year=year,
         publisher=publisher,
         error=error_message,
-        books=get_books(),
         is_edit=False
     )
 
@@ -143,10 +142,14 @@ def article():
 
     return render_template(
         "article.html",
+        reference_name=reference_name,
         author=author,
         title=title,
         year=year,
-        error=error_message
+        journal=journal,
+        pages=pages,
+        error=error_message,
+        is_edit=False,
     )
 
 
@@ -209,6 +212,56 @@ def delete_article_route(article_id):
     """Delete an article."""
     delete_article(db, article_id)
     return redirect(url_for("index"))
+
+
+@app.route("/article/<int:article_id>/edit", methods=["GET", "POST"])
+def edit_article_route(article_id):
+    """Edit an article."""
+    article_to_edit = get_article(db, article_id)
+    if article_to_edit is None:
+        abort(404)
+
+    if request.method == "POST":
+        reference_name = request.form.get("reference_name")
+        title = request.form.get("title")
+        author = request.form.get("author")
+        year = request.form.get("year")
+        journal = request.form.get("journal")
+        pages = request.form.get("pages")
+
+        try:
+            year_int = parse_year(year)
+        except ValueError as err:
+            error_message = str(err)
+        else:
+            edit_article(db, article_id, reference_name, title, author,
+                         year_int, journal, pages)
+            return redirect(url_for("index"))
+
+        article_to_edit = {
+            "id": article_id,
+            "reference_name": reference_name,
+            "title": title,
+            "author": author,
+            "year": year,
+            "journal": journal,
+            "pages": pages,
+        }
+    else:
+        error_message = None
+
+    return render_template(
+        "article.html",
+        article=article_to_edit,
+        is_edit=True,
+        reference_name=article_to_edit["reference_name"],
+        author=article_to_edit["author"],
+        title=article_to_edit["title"],
+        year=article_to_edit["year"],
+        journal=article_to_edit["journal"],
+        pages=article_to_edit["pages"],
+        error=error_message,
+    )
 
 
 @app.route("/inproceedings/<int:inproceedings_id>/delete", methods=["POST"])

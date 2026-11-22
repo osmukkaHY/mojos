@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <title>Lisää artikkeli</title>
+      <title>{% if is_edit %}Muokkaa artikkelia{% else %}Lisää artikkeli{% endif %}</title>
     </head>
     
     <body>
-      <h2>Syötä artikkeli</h2>
+      <h2>{% if is_edit %}Muokkaa artikkelia{% else %}Syötä artikkeli{% endif %}</h2>
       {% if error %}
       <p style="color: red;">{{ error }}</p>
       {% endif %}
       <small style="color: grey;">Täytä tiedot kenttien esimerkkien mukaisesti.</small>
 
-      <form action="" method="post">
+      <form action="{% if is_edit %}{{ url_for('edit_article_route', article_id=article.id) }}{% else %}{{ url_for('article') }}{% endif %}" method="post">
         <p>
           Viiteavain: <br />
-          <input type="text" name="reference_name"  placeholder="Käytetään viite komennossa" required />
+          <input type="text" name="reference_name" value="{% if is_edit %}{{ article.reference_name }}{% else %}{{ reference_name }}{% endif %}" placeholder="Käytetään viite komennossa" required />
         </p>
         <p>
           Nimi: <br />
-          <input type="text" name="title" placeholder="Artikkelin virallinen nimi" required/>
+          <input type="text" name="title" value="{% if is_edit %}{{ article.title }}{% else %}{{ title }}{% endif %}" placeholder="Artikkelin virallinen nimi" required/>
         </p>
         <p>
           Kirjoittaja: <br />
-          <input type="text" name="author" placeholder="Sukunimi Etunimi" required/>
+          <input type="text" name="author" value="{% if is_edit %}{{ article.author }}{% else %}{{ author }}{% endif %}" placeholder="Sukunimi Etunimi" required/>
           <br /><small style="color: #666;">Erota useat kirjoittajat pilkulla.</small>
         </p>
         <p>
           Julkaisuvuosi: <br />
-          <input type="text" name="year" placeholder="VVVV (esim. 2026)" required/>
+          <input type="text" name="year" value="{% if is_edit %}{{ article.year }}{% else %}{{ year }}{% endif %}" placeholder="VVVV (esim. 2026)" required/>
         </p>
         <p>
           Tiedejulkaisu: <br />
-          <input type="text" name="journal" placeholder="Lehden tai julkaisun nimi" required/>
+          <input type="text" name="journal" value="{% if is_edit %}{{ article.journal }}{% else %}{{ journal }}{% endif %}" placeholder="Lehden tai julkaisun nimi" required/>
         </p>
         <p>
           Sivut: <br />
-          <input type="text" name="pages" placeholder="Esim. 45–52" required/>
+          <input type="text" name="pages" value="{% if is_edit %}{{ article.pages }}{% else %}{{ pages }}{% endif %}" placeholder="Esim. 45–52" required/>
         </p>
-        <input type="submit" value="Tallenna"/>
+        <input type="submit" value="{% if is_edit %}Päivitä{% else %}Tallenna{% endif %}"/>
       </form>
       <form action="/" method="get">
         <p>
@@ -45,7 +45,7 @@
         </p>
       </form>
 
-      {% if not error and (author or title or year) %}
+      {% if not error and (author or title or year) and not is_edit %}
       <h3>Syötit julkaisun:</h3>
           <p>Kirjoittaja: {{ author }}</p>
           <p>Nimi: {{ title }}</p>

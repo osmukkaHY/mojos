@@ -30,6 +30,9 @@
         <form action="/article/{{ article.id }}/delete" method="post" style="display: inline;">
           <button type="submit" onclick="return confirm('Haluatko varmasti poistaa tämän artikkelin?')">Poista</button>
         </form>
+        <form action="/article/{{ article.id }}/edit" method="get" style="display: inline;">
+          <button type="submit">Muokkaa</button>
+        </form>
       </li>
     {% endfor %}
     </ul>
