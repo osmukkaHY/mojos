@@ -3,7 +3,7 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, redirect, url_for, abort
-# from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 from repositories.books import add_book, get_books, get_book, delete_book, edit_book
 from models.book import Book
