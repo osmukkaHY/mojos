@@ -1,4 +1,5 @@
-from config import db, app
+from app import app
+from database import db, create_db
 from sqlalchemy import text
 import os
 
