@@ -11,6 +11,7 @@ Test new book printed to page
     Fill Text  input[name="title"]  Test-Title
     Fill Text  input[name="year"]  2026
     Fill Text  input[name="publisher"]  Test-Publisher
+    Fill Text  input[name="tag"]  Test-Tag
     Click  input[type="submit"]
     Get Text  text=Kirjoittaja: Test-Author
     Get Text  text=Nimi: Test-Title

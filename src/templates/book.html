@@ -33,6 +33,10 @@
       Kustantamo: <br />
       <input type="text" name="publisher" value="{% if is_edit %}{{ book.publisher }}{% endif %}" required/>
     </p>
+    <p>
+      Tag: <br />
+      <input type="text" name="tag" value="{% if is_edit %}{{ book.tag }}{% endif %}"/>
+    </p>
     <input type="submit" value="{% if is_edit %}Päivitä{% else %}Lähetä{% endif %}" />
   </form>
   <p>
