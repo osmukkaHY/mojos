@@ -24,8 +24,8 @@ load_dotenv()
 
 
 app = Flask(__name__)
-# app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
+# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
 create_db(app)
 
