@@ -9,6 +9,13 @@
       <li><a href="/article">Lisää artikkeli</a></li>
     </ul>
 
+    <h3 style="margin-top: 2rem;"></h3>
+    <form action="/" method="get">
+      <label for="user_search">Hae viitteitä:</label>
+      <input type="search" id="user_search" name="user_search" value="{{ query }}">
+      <button type="submit">Hae</button>
+    </form>
+
     <h3 style="margin-top: 2rem;">Lisätyt kirjat:</h3>
     <ul>
     {% for book in books %}
