@@ -3,14 +3,19 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, redirect, url_for, abort
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy  # pylint: disable=unused-import
+
+from models.book import Book  # pylint: disable=unused-import
+from models.article import Article  # pylint: disable=unused-import
+from models.inproceedings import Inproceedings  # pylint: disable=unused-import
 
 from repositories.books import add_book, get_books, get_book, delete_book, edit_book
-from models.book import Book
-from repositories.articles import add_article, get_articles, get_article, delete_article, edit_article
-from models.article import Article
-from repositories.inproceedings import add_inproceedings, get_inproceedings, get_inproceeding, delete_inproceedings, edit_inproceeding
-from models.inproceedings import Inproceedings
+from repositories.articles import (
+    add_article, get_articles, get_article, delete_article, edit_article
+)
+from repositories.inproceedings import (
+    add_inproceedings, get_inproceedings, get_inproceeding, delete_inproceedings, edit_inproceeding
+)
 from database import db, create_db
 from validators import parse_year
 
