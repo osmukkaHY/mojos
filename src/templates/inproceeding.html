@@ -35,6 +35,10 @@
       Sivut: <br />
       <input type="text" name="pages" value="{% if is_edit %}{{ pages }}{% else %}{{ pages }}{% endif %}" />
     </p>
+    <p>
+      Tag: <br />
+      <input type="text" name="tag" value="{% if is_edit %}{{ tag }}{% else %}{{ tag }}{% endif %}" />
+    </p>
     <input type="submit" value="{% if is_edit %}Päivitä{% else %}Lähetä{% endif %}" />
   </form>
   <p>
