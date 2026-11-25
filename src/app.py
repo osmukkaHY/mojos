@@ -85,6 +85,7 @@ def inproceedings():
     year = ""
     series = ""
     pages = ""
+    tag = ""
     error_message = None
 
     if request.method == "POST":
@@ -94,6 +95,7 @@ def inproceedings():
         year = request.form.get("year")
         series = request.form.get("series", "")
         pages = request.form.get("pages", "")
+        tag = request.form.get("tag", "")
 
         try:
             year_int = parse_year(year)
@@ -101,7 +103,7 @@ def inproceedings():
             error_message = str(err)
         else:
             add_inproceedings(
-                db, reference_name, title, author, year_int, series, pages
+                db, reference_name, title, author, year_int, series, pages, tag
             )
 
     return render_template(
@@ -112,6 +114,7 @@ def inproceedings():
         year=year,
         series=series,
         pages=pages,
+        tag=tag,
         error=error_message,
         is_edit=False,
     )
@@ -126,6 +129,7 @@ def article():
     year = ""
     journal = ""
     pages = ""
+    tag = ""
     error_message = None
 
     if request.method == "POST":
@@ -135,6 +139,7 @@ def article():
         year = request.form.get("year")
         journal = request.form.get("journal")
         pages = request.form.get("pages")
+        tag = request.form.get("tag", "")
 
         try:
             year_int = parse_year(year)
@@ -142,7 +147,7 @@ def article():
             error_message = str(err)
         else:
             add_article(db, reference_name, title,
-                        author, year_int, journal, pages)
+                        author, year_int, journal, pages, tag)
 
     return render_template(
         "article.html",
@@ -152,6 +157,7 @@ def article():
         year=year,
         journal=journal,
         pages=pages,
+        tag=tag,
         error=error_message,
         is_edit=False,
     )
@@ -185,7 +191,7 @@ def edit_book_route(book_id):
             error_message = str(err)
         else:
             edit_book(db, book_id, reference_name,
-                      title, author, year_int, publisher)
+                      title, author, year_int, publisher, tag)
             return redirect(url_for("index"))
 
         book_to_edit = {
@@ -235,6 +241,7 @@ def edit_article_route(article_id):
         year = request.form.get("year")
         journal = request.form.get("journal")
         pages = request.form.get("pages")
+        tag = request.form.get("tag", "")
 
         try:
             year_int = parse_year(year)
@@ -242,7 +249,7 @@ def edit_article_route(article_id):
             error_message = str(err)
         else:
             edit_article(db, article_id, reference_name, title, author,
-                         year_int, journal, pages)
+                         year_int, journal, pages, tag)
             return redirect(url_for("index"))
 
         article_to_edit = {
@@ -253,6 +260,7 @@ def edit_article_route(article_id):
             "year": year,
             "journal": journal,
             "pages": pages,
+            "tag": tag,
         }
     else:
         error_message = None
@@ -267,6 +275,7 @@ def edit_article_route(article_id):
         year=article_to_edit["year"],
         journal=article_to_edit["journal"],
         pages=article_to_edit["pages"],
+        tag=article_to_edit["tag"],
         error=error_message,
     )
 
@@ -292,6 +301,7 @@ def edit_inproceedings_route(inproceedings_id):
         year = request.form.get("year")
         series = request.form.get("series", "")
         pages = request.form.get("pages", "")
+        tag = request.form.get("tag", "")
 
         try:
             year_int = parse_year(year)
@@ -300,7 +310,7 @@ def edit_inproceedings_route(inproceedings_id):
         else:
             edit_inproceeding(
                 db, inproceedings_id, reference_name, title, author,
-                year_int, series, pages
+                year_int, series, pages, tag
             )
             return redirect(url_for("index"))
 
@@ -312,6 +322,7 @@ def edit_inproceedings_route(inproceedings_id):
             "year": year,
             "series": series,
             "pages": pages,
+            "tag": tag,
         }
     else:
         error_message = None
@@ -326,6 +337,7 @@ def edit_inproceedings_route(inproceedings_id):
         year=inproceeding_to_edit["year"],
         series=inproceeding_to_edit["series"],
         pages=inproceeding_to_edit["pages"],
+        tag=inproceeding_to_edit["tag"],
         error=error_message,
     )
 
