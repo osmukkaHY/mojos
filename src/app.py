@@ -19,8 +19,8 @@ load_dotenv()
 
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+# app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URI")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 db.init_app(app)
 create_db(app)
 
@@ -45,6 +45,7 @@ def book():
     title = ""
     year = ""
     publisher = ""
+    tag = ""
     error_message = None
     if request.method == "POST":
         reference_name = request.form.get("reference_name")
@@ -52,6 +53,7 @@ def book():
         title = request.form.get("title")
         year = request.form.get("year")
         publisher = request.form.get("publisher")
+        tag = request.form.get("tag")
 
         try:
             year_int = parse_year(year)
@@ -59,7 +61,7 @@ def book():
             error_message = str(err)
 
         else:
-            add_book(db, reference_name, title, author, year_int, publisher)
+            add_book(db, reference_name, title, author, year_int, publisher, tag)
 
     return render_template(
         "book.html",
@@ -68,6 +70,7 @@ def book():
         title=title,
         year=year,
         publisher=publisher,
+        tag=tag,
         error=error_message,
         is_edit=False
     )
@@ -174,6 +177,7 @@ def edit_book_route(book_id):
         author = request.form.get("author")
         year = request.form.get("year")
         publisher = request.form.get("publisher")
+        tag = request.form.get("tag")
 
         try:
             year_int = parse_year(year)
@@ -190,7 +194,8 @@ def edit_book_route(book_id):
             "title": title,
             "author": author,
             "year": year,
-            "publisher": publisher
+            "publisher": publisher,
+            "tag": tag
         }
     else:
         error_message = None
@@ -204,6 +209,7 @@ def edit_book_route(book_id):
         title=book_to_edit["title"],
         year=book_to_edit["year"],
         publisher=book_to_edit["publisher"],
+        tag=book_to_edit["tag"],
         error=error_message
     )
 

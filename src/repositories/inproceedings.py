@@ -3,12 +3,11 @@ from sqlalchemy import text
 from database import db
 
 
-def add_inproceedings(db, reference_name: str, title: str, author: str, year: int, series: str, pages: str) -> None:
-    """Adds an inproceedings entry to the database."""
+def add_inproceedings(db, reference_name: str, title: str, author: str, year: int, series: str, pages: str, tag: str) -> None:
 
     sql = text(
-        "INSERT INTO inproceedings (reference_name, title, author, year, series, pages) "
-        "VALUES (:reference_name, :title, :author, :year, :series, :pages)"
+        "INSERT INTO inproceedings (reference_name, title, author, year, series, pages, tag) "
+        "VALUES (:reference_name, :title, :author, :year, :series, :pages, :tag)"
     )
     db.session.execute(
         sql,
@@ -19,6 +18,7 @@ def add_inproceedings(db, reference_name: str, title: str, author: str, year: in
             "year": year,
             "series": series,
             "pages": pages,
+            "tag": tag,
         },
     )
     db.session.commit()
@@ -32,7 +32,7 @@ def get_inproceedings():
     """
 
     return db.session.execute(
-        text("SELECT id, reference_name, title, author, year, series, pages "
+        text("SELECT id, reference_name, title, author, year, series, pages, tag "
              "FROM inproceedings ORDER BY id")
     ).mappings().all()
 
@@ -49,7 +49,7 @@ def get_inproceeding(db, inproceedings_id: int):
     """
 
     return db.session.execute(
-        text("SELECT id, reference_name, title, author, year, series, pages "
+        text("SELECT id, reference_name, title, author, year, series, pages, tag "
              "FROM inproceedings WHERE id = :id"),
         {"id": inproceedings_id},
     ).mappings().first()
@@ -73,14 +73,15 @@ def edit_inproceeding(
     year: int,
     series: str,
     pages: str,
+    tag: str,
 ):
     """Edit an inproceedings in the database."""
     db.session.execute(
         text("UPDATE inproceedings SET reference_name = :reference_name, "
              "title = :title, author = :author, year = :year, "
-             "series = :series, pages = :pages WHERE id = :id"),
+             "series = :series, pages = :pages, tag = :tag WHERE id = :id"),
         {"id": inproceedings_id, "reference_name": reference_name,
          "title": title, "author": author, "year": year,
-         "series": series, "pages": pages}
+         "series": series, "pages": pages, "tag": tag}
     )
     db.session.commit()

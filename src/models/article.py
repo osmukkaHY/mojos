@@ -18,3 +18,4 @@ class Article(db.Model):
     year: Mapped[int] = mapped_column(Integer)
     journal: Mapped[str] = mapped_column(Text)
     pages: Mapped[str] = mapped_column(Text)
+    tag: Mapped[str] = mapped_column(Text)
