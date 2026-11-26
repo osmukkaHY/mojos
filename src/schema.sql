@@ -4,7 +4,8 @@ CREATE TABLE Book (
   title TEXT NOT NULL,
   author TEXT NOT NULL,
   year INTEGER NOT NULL,
-  publisher TEXT NOT NULL
+  publisher TEXT NOT NULL,
+  tag TEXT
 );
 
 CREATE TABLE Article (
@@ -14,7 +15,8 @@ CREATE TABLE Article (
   author TEXT NOT NULL,
   year INTEGER NOT NULL,
   journal TEXT NOT NULL,
-  pages TEXT NOT NULL
+  pages TEXT NOT NULL,
+  tag TEXT
 );
 
 CREATE TABLE Inproceedings (
@@ -24,6 +26,7 @@ CREATE TABLE Inproceedings (
   author TEXT NOT NULL,
   year INTEGER NOT NULL,
   series TEXT NOT NULL,
-  pages TEXT NOT NULL
+  pages TEXT NOT NULL,
+  tag TEXT
 );
 

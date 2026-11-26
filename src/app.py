@@ -3,14 +3,19 @@
 from os import getenv
 from dotenv import load_dotenv
 from flask import Flask, request, render_template, redirect, url_for, abort
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy  # pylint: disable=unused-import
+
+from models.book import Book  # pylint: disable=unused-import
+from models.article import Article  # pylint: disable=unused-import
+from models.inproceedings import Inproceedings  # pylint: disable=unused-import
 
 from repositories.books import add_book, get_books, get_book, delete_book, edit_book
-from models.book import Book
-from repositories.articles import add_article, get_articles, get_article, delete_article, edit_article
-from models.article import Article
-from repositories.inproceedings import add_inproceedings, get_inproceedings, get_inproceeding, delete_inproceedings, edit_inproceeding
-from models.inproceedings import Inproceedings
+from repositories.articles import (
+    add_article, get_articles, get_article, delete_article, edit_article
+)
+from repositories.inproceedings import (
+    add_inproceedings, get_inproceedings, get_inproceeding, delete_inproceedings, edit_inproceeding
+)
 from database import db, create_db
 from validators import parse_year
 
@@ -45,6 +50,7 @@ def book():
     title = ""
     year = ""
     publisher = ""
+    tag = ""
     error_message = None
     if request.method == "POST":
         reference_name = request.form.get("reference_name")
@@ -52,6 +58,7 @@ def book():
         title = request.form.get("title")
         year = request.form.get("year")
         publisher = request.form.get("publisher")
+        tag = request.form.get("tag")
 
         try:
             year_int = parse_year(year)
@@ -59,7 +66,7 @@ def book():
             error_message = str(err)
 
         else:
-            add_book(db, reference_name, title, author, year_int, publisher)
+            add_book(db, reference_name, title, author, year_int, publisher, tag)
 
     return render_template(
         "book.html",
@@ -68,6 +75,7 @@ def book():
         title=title,
         year=year,
         publisher=publisher,
+        tag=tag,
         error=error_message,
         is_edit=False
     )
@@ -82,6 +90,7 @@ def inproceedings():
     year = ""
     series = ""
     pages = ""
+    tag = ""
     error_message = None
 
     if request.method == "POST":
@@ -91,6 +100,7 @@ def inproceedings():
         year = request.form.get("year")
         series = request.form.get("series", "")
         pages = request.form.get("pages", "")
+        tag = request.form.get("tag", "")
 
         try:
             year_int = parse_year(year)
@@ -98,7 +108,7 @@ def inproceedings():
             error_message = str(err)
         else:
             add_inproceedings(
-                db, reference_name, title, author, year_int, series, pages
+                db, reference_name, title, author, year_int, series, pages, tag
             )
 
     return render_template(
@@ -109,6 +119,7 @@ def inproceedings():
         year=year,
         series=series,
         pages=pages,
+        tag=tag,
         error=error_message,
         is_edit=False,
     )
@@ -123,6 +134,7 @@ def article():
     year = ""
     journal = ""
     pages = ""
+    tag = ""
     error_message = None
 
     if request.method == "POST":
@@ -132,6 +144,7 @@ def article():
         year = request.form.get("year")
         journal = request.form.get("journal")
         pages = request.form.get("pages")
+        tag = request.form.get("tag", "")
 
         try:
             year_int = parse_year(year)
@@ -139,7 +152,7 @@ def article():
             error_message = str(err)
         else:
             add_article(db, reference_name, title,
-                        author, year_int, journal, pages)
+                        author, year_int, journal, pages, tag)
 
     return render_template(
         "article.html",
@@ -149,6 +162,7 @@ def article():
         year=year,
         journal=journal,
         pages=pages,
+        tag=tag,
         error=error_message,
         is_edit=False,
     )
@@ -174,6 +188,7 @@ def edit_book_route(book_id):
         author = request.form.get("author")
         year = request.form.get("year")
         publisher = request.form.get("publisher")
+        tag = request.form.get("tag")
 
         try:
             year_int = parse_year(year)
@@ -181,7 +196,7 @@ def edit_book_route(book_id):
             error_message = str(err)
         else:
             edit_book(db, book_id, reference_name,
-                      title, author, year_int, publisher)
+                      title, author, year_int, publisher, tag)
             return redirect(url_for("index"))
 
         book_to_edit = {
@@ -190,7 +205,8 @@ def edit_book_route(book_id):
             "title": title,
             "author": author,
             "year": year,
-            "publisher": publisher
+            "publisher": publisher,
+            "tag": tag
         }
     else:
         error_message = None
@@ -204,6 +220,7 @@ def edit_book_route(book_id):
         title=book_to_edit["title"],
         year=book_to_edit["year"],
         publisher=book_to_edit["publisher"],
+        tag=book_to_edit["tag"],
         error=error_message
     )
 
@@ -229,6 +246,7 @@ def edit_article_route(article_id):
         year = request.form.get("year")
         journal = request.form.get("journal")
         pages = request.form.get("pages")
+        tag = request.form.get("tag", "")
 
         try:
             year_int = parse_year(year)
@@ -236,7 +254,7 @@ def edit_article_route(article_id):
             error_message = str(err)
         else:
             edit_article(db, article_id, reference_name, title, author,
-                         year_int, journal, pages)
+                         year_int, journal, pages, tag)
             return redirect(url_for("index"))
 
         article_to_edit = {
@@ -247,6 +265,7 @@ def edit_article_route(article_id):
             "year": year,
             "journal": journal,
             "pages": pages,
+            "tag": tag,
         }
     else:
         error_message = None
@@ -261,6 +280,7 @@ def edit_article_route(article_id):
         year=article_to_edit["year"],
         journal=article_to_edit["journal"],
         pages=article_to_edit["pages"],
+        tag=article_to_edit["tag"],
         error=error_message,
     )
 
@@ -286,6 +306,7 @@ def edit_inproceedings_route(inproceedings_id):
         year = request.form.get("year")
         series = request.form.get("series", "")
         pages = request.form.get("pages", "")
+        tag = request.form.get("tag", "")
 
         try:
             year_int = parse_year(year)
@@ -294,7 +315,7 @@ def edit_inproceedings_route(inproceedings_id):
         else:
             edit_inproceeding(
                 db, inproceedings_id, reference_name, title, author,
-                year_int, series, pages
+                year_int, series, pages, tag
             )
             return redirect(url_for("index"))
 
@@ -306,6 +327,7 @@ def edit_inproceedings_route(inproceedings_id):
             "year": year,
             "series": series,
             "pages": pages,
+            "tag": tag,
         }
     else:
         error_message = None
@@ -320,6 +342,7 @@ def edit_inproceedings_route(inproceedings_id):
         year=inproceeding_to_edit["year"],
         series=inproceeding_to_edit["series"],
         pages=inproceeding_to_edit["pages"],
+        tag=inproceeding_to_edit["tag"],
         error=error_message,
     )
 
