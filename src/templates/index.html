@@ -19,7 +19,14 @@
         <form action="/book/{{ book.id }}/edit" method="get" style="display: inline;">
           <button type="submit">Muokkaa</button>
         </form>
+        <form action="" method="post" style="display: inline">
+          <input type="hidden" name="book_id" value="{{ book.id }}"/>
+          <button type="submit">Tulosta BibTeX</button>
+        </form>
       </li>
+      {% if bibtex.reference_type == "book" and bibtex.reference_id == book.id %}
+      <pre style="display: inline-block; background-color:lightblue; padding: 0.75rem 1rem;" >{{ bibtex.string }}</pre>
+      {% endif %}
     {% endfor %}
     </ul>
 
@@ -33,7 +40,14 @@
         <form action="/article/{{ article.id }}/edit" method="get" style="display: inline;">
           <button type="submit">Muokkaa</button>
         </form>
+        <form action="" method="post" style="display: inline">
+          <input type="hidden" name="article_id" value="{{ article.id }}"/>
+          <button type="submit">Tulosta BibTeX</button>
+        </form>
       </li>
+      {% if bibtex.reference_type == "article" and bibtex.reference_id == article.id %}
+      <pre style="display: inline-block; background-color:lightblue; padding: 0.75rem 1rem;" >{{ bibtex.string }}</pre>
+      {% endif %}
     {% endfor %}
     </ul>
 
@@ -47,7 +61,14 @@
         <form action="/inproceedings/{{ inproceeding.id }}/edit" method="get" style="display: inline;">
           <button type="submit">Muokkaa</button>
         </form>
+        <form action="" method="post" style="display: inline">
+          <input type="hidden" name="inproceeding_id" value="{{ inproceeding.id }}"/>
+          <button type="submit">Tulosta BibTeX</button>
+        </form>
       </li>
+      {% if bibtex.reference_type == "inproceeding" and bibtex.reference_id == inproceeding.id %}
+      <pre style="display: inline-block; background-color:lightblue; padding: 0.75rem 1rem;" >{{ bibtex.string }}</pre>
+      {% endif %}
     {% endfor %}
     </ul>
   </body>

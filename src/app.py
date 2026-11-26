@@ -30,17 +30,79 @@ db.init_app(app)
 create_db(app)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
     """Render the front page."""
+    bibtex = None
+    if request.method == "POST":
+        if "book_id" in request.form:
+            book_id = request.form.get("book_id")
+            bibtex = bibtex_format_book(book_id)
+        elif "article_id" in request.form:
+            article_id = request.form.get("article_id")
+            bibtex = bibtex_format_article(article_id)
+        elif "inproceeding_id" in request.form:
+            inproceeding_id = request.form.get("inproceeding_id")
+            bibtex = bibtex_format_inproceeding(inproceeding_id)
+
     return render_template(
         "index.html",
         books=get_books(),
         articles=get_articles(),
-        inproceedings=get_inproceedings()
+        inproceedings=get_inproceedings(),
+        bibtex=bibtex
     )
 
+def bibtex_format_book(book_id):
+    """Generates BibTeX-format string for book.
+    
+       Returns: a dictionary with the bibtex string, reference type and the reference id 
+    """
+    book_data = get_book(db, book_id)
 
+    bibtex = f"""@book{{{book_data["reference_name"]},
+    author = {{{book_data["author"]}}},
+    title = {{{book_data["title"]}}},
+    year = {{{book_data["year"]}}},
+    publisher = {{{book_data["publisher"]}}}
+}}"""
+
+    return {"string": bibtex, "reference_type": "book", "reference_id": book_data["id"]}
+
+def bibtex_format_article(article_id):
+    """Generates BibTeX-format string for article.
+
+       Returns: a dictionary with the bibtex string, reference type and the reference id 
+    """
+    article_data = get_article(db, article_id)
+
+    bibtex = f"""@article{{{article_data["reference_name"]},
+    author = {{{article_data["author"]}}},
+    title = {{{article_data["title"]}}},
+    journal = {{{article_data["journal"]}}},
+    year = {{{article_data["year"]}}},
+    pages = {{{article_data["pages"]}}}
+}}"""
+
+    return {"string": bibtex, "reference_type": "article", "reference_id": article_data["id"]}
+
+def bibtex_format_inproceeding(inproceeding_id):
+    """Generates BibTeX-format string for inproceedings.
+
+       Returns: a dictionary with the bibtex string, reference type and the reference id 
+    """
+    inproceeding_data = get_inproceeding(db, inproceeding_id)
+
+    bibtex = f"""@inproceedings{{{inproceeding_data["reference_name"]},
+    author = {{{inproceeding_data["author"]}}},
+    title = {{{inproceeding_data["title"]}}},
+    year = {{{inproceeding_data["year"]}}},
+    series = {{{inproceeding_data["series"]}}},
+    pages = {{{inproceeding_data["pages"]}}}
+}}"""
+
+    return {"string": bibtex, "reference_type": "inproceeding", "reference_id": inproceeding_data["id"]}
+    
 @app.route("/book", methods=["GET", "POST"])
 def book():
     """API request for form rendering"""
