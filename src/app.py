@@ -53,9 +53,10 @@ def index():
         bibtex=bibtex
     )
 
+
 def bibtex_format_book(book_id):
     """Generates BibTeX-format string for book.
-    
+
        Returns: a dictionary with the bibtex string, reference type and the reference id 
     """
     book_data = get_book(db, book_id)
@@ -68,6 +69,7 @@ def bibtex_format_book(book_id):
 }}"""
 
     return {"string": bibtex, "reference_type": "book", "reference_id": book_data["id"]}
+
 
 def bibtex_format_article(article_id):
     """Generates BibTeX-format string for article.
@@ -86,6 +88,7 @@ def bibtex_format_article(article_id):
 
     return {"string": bibtex, "reference_type": "article", "reference_id": article_data["id"]}
 
+
 def bibtex_format_inproceeding(inproceeding_id):
     """Generates BibTeX-format string for inproceedings.
 
@@ -102,7 +105,8 @@ def bibtex_format_inproceeding(inproceeding_id):
 }}"""
 
     return {"string": bibtex, "reference_type": "inproceeding", "reference_id": inproceeding_data["id"]}
-    
+
+
 @app.route("/book", methods=["GET", "POST"])
 def book():
     """API request for form rendering"""
@@ -128,7 +132,8 @@ def book():
             error_message = str(err)
 
         else:
-            add_book(db, reference_name, title, author, year_int, publisher, tag)
+            add_book(db, reference_name, title,
+                     author, year_int, publisher, tag)
 
     return render_template(
         "book.html",
