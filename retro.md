@@ -18,4 +18,4 @@ Kommunikaatio ja yhdessä tekeminen on jatkunut hyvänä. Brancheja on edelleen 
 
 Taskien ja user storien pilkkominen ja tarkempi kirjaaminen olisi paikallaan. Taskeille tärkeysjärjestys. Ja viedään tuote OKD-klusterille aiemmin, että nähdään ongelmat sen kanssa ajoissa.
 
-Lopetetaan liiallinen merge-konfliktien varominen ja triviaalien tekemisten yhteydessä muilta kyseleminen. 
+Lopetetaan liiallinen merge-konfliktien varominen.
