@@ -107,6 +107,42 @@ def bibtex_format_inproceeding(inproceeding_id):
     return {"string": bibtex, "reference_type": "inproceeding", "reference_id": inproceeding_data["id"]}
 
 
+@app.route("/bibtex")
+def generate_bibtex():
+    books = get_books(),
+    articles = get_articles(),
+    inproceedings = get_inproceedings(),
+
+    book_bibtexs = []
+    book_strings = []
+    for book in books[0]:
+        formatted_book_string = bibtex_format_book(book["id"])
+        book_bibtexs.append(formatted_book_string)
+        book_strings = [bibtex["string"] for bibtex in book_bibtexs] 
+
+    article_bibtexs = []
+    article_strings = []
+    for article in articles[0]:
+        formatted_article_string = bibtex_format_article(article["id"])
+        article_bibtexs.append(formatted_article_string)
+        article_strings = [bibtex["string"] for bibtex in article_bibtexs] 
+
+    inproceeding_bibtexs = []
+    inproceeding_strings = []
+    for inproceeding in inproceedings[0]:
+        formatted_inproceeding_string = bibtex_format_inproceeding(inproceeding["id"])
+        inproceeding_bibtexs.append(formatted_inproceeding_string)
+        inproceeding_strings = [bibtex["string"] for bibtex in inproceeding_bibtexs]
+
+    return render_template("bibtex-export.html",
+                           book_bibtex=book_strings,
+                           article_bibtex=article_strings,
+                           inproceeding_bibtex=inproceeding_strings,
+                           )
+
+
+
+
 @app.route("/book", methods=["GET", "POST"])
 def book():
     """API request for form rendering"""
