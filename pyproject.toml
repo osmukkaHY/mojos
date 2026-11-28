@@ -20,3 +20,6 @@ dev = [
     "robotframework-browser>=21.0.0",
     "robotframework-browser-batteries==21.0.0",
 ]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

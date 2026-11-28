@@ -30,15 +30,117 @@ db.init_app(app)
 create_db(app)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
     """Render the front page."""
+    bibtex = None
+    if request.method == "POST":
+        if "book_id" in request.form:
+            book_id = request.form.get("book_id")
+            bibtex = bibtex_format_book(book_id)
+        elif "article_id" in request.form:
+            article_id = request.form.get("article_id")
+            bibtex = bibtex_format_article(article_id)
+        elif "inproceeding_id" in request.form:
+            inproceeding_id = request.form.get("inproceeding_id")
+            bibtex = bibtex_format_inproceeding(inproceeding_id)
+
     return render_template(
         "index.html",
         books=get_books(),
         articles=get_articles(),
-        inproceedings=get_inproceedings()
+        inproceedings=get_inproceedings(),
+        bibtex=bibtex
     )
+
+
+def bibtex_format_book(book_id):
+    """Generates BibTeX-format string for book.
+
+       Returns: a dictionary with the bibtex string, reference type and the reference id 
+    """
+    book_data = get_book(db, book_id)
+
+    bibtex = f"""@book{{{book_data["reference_name"]},
+    author = {{{book_data["author"]}}},
+    title = {{{book_data["title"]}}},
+    year = {{{book_data["year"]}}},
+    publisher = {{{book_data["publisher"]}}}
+}}"""
+
+    return {"string": bibtex, "reference_type": "book", "reference_id": book_data["id"]}
+
+
+def bibtex_format_article(article_id):
+    """Generates BibTeX-format string for article.
+
+       Returns: a dictionary with the bibtex string, reference type and the reference id 
+    """
+    article_data = get_article(db, article_id)
+
+    bibtex = f"""@article{{{article_data["reference_name"]},
+    author = {{{article_data["author"]}}},
+    title = {{{article_data["title"]}}},
+    journal = {{{article_data["journal"]}}},
+    year = {{{article_data["year"]}}},
+    pages = {{{article_data["pages"]}}}
+}}"""
+
+    return {"string": bibtex, "reference_type": "article", "reference_id": article_data["id"]}
+
+
+def bibtex_format_inproceeding(inproceeding_id):
+    """Generates BibTeX-format string for inproceedings.
+
+       Returns: a dictionary with the bibtex string, reference type and the reference id 
+    """
+    inproceeding_data = get_inproceeding(db, inproceeding_id)
+
+    bibtex = f"""@inproceedings{{{inproceeding_data["reference_name"]},
+    author = {{{inproceeding_data["author"]}}},
+    title = {{{inproceeding_data["title"]}}},
+    year = {{{inproceeding_data["year"]}}},
+    series = {{{inproceeding_data["series"]}}},
+    pages = {{{inproceeding_data["pages"]}}}
+}}"""
+
+    return {"string": bibtex, "reference_type": "inproceeding", "reference_id": inproceeding_data["id"]}
+
+
+@app.route("/bibtex")
+def generate_bibtex():
+    books = get_books(),
+    articles = get_articles(),
+    inproceedings = get_inproceedings(),
+
+    book_bibtexs = []
+    book_strings = []
+    for book in books[0]:
+        formatted_book_string = bibtex_format_book(book["id"])
+        book_bibtexs.append(formatted_book_string)
+        book_strings = [bibtex["string"] for bibtex in book_bibtexs] 
+
+    article_bibtexs = []
+    article_strings = []
+    for article in articles[0]:
+        formatted_article_string = bibtex_format_article(article["id"])
+        article_bibtexs.append(formatted_article_string)
+        article_strings = [bibtex["string"] for bibtex in article_bibtexs] 
+
+    inproceeding_bibtexs = []
+    inproceeding_strings = []
+    for inproceeding in inproceedings[0]:
+        formatted_inproceeding_string = bibtex_format_inproceeding(inproceeding["id"])
+        inproceeding_bibtexs.append(formatted_inproceeding_string)
+        inproceeding_strings = [bibtex["string"] for bibtex in inproceeding_bibtexs]
+
+    return render_template("bibtex-export.html",
+                           book_bibtex=book_strings,
+                           article_bibtex=article_strings,
+                           inproceeding_bibtex=inproceeding_strings,
+                           )
+
+
 
 
 @app.route("/book", methods=["GET", "POST"])
@@ -66,7 +168,8 @@ def book():
             error_message = str(err)
 
         else:
-            add_book(db, reference_name, title, author, year_int, publisher, tag)
+            add_book(db, reference_name, title,
+                     author, year_int, publisher, tag)
 
     return render_template(
         "book.html",
