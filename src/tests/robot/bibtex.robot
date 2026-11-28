@@ -27,8 +27,25 @@ Test Pressing Generate Bibtex Prints Bibtex Format With Correct Data
     Fill Text  input[name="tag"]  Bibtex-Data-Tag
     Click  input[type="submit"]
     New Page  ${HOME_URL}
-    Click  xpath=//li[contains(., 'Bibtex-Data-Ref')]//button[.="Tulosta BibTeX"]
+    Click  xpath=(//li[contains(., 'Bibtex-Data-Ref')]//button[.="Tulosta BibTeX"])[1]
     ${bibtex}=  Get Text  css=pre
+    Should Contain  ${bibtex}  @book{Bibtex-Data-Ref,
+    Should Contain  ${bibtex}  author = {Bibtex-Data-Author}
+    Should Contain  ${bibtex}  title = {Bibtex-Data-Title}
+    Should Contain  ${bibtex}  year = {2025}
+    Should Contain  ${bibtex}  publisher = {Bibtex-Data-Publisher}
+
+Test Bibtex Page Prints Entire Bibtex Correctly
+    New Page  ${HOME_URL}/book
+    Fill Text  input[name="reference_name"]  Bibtex-Data-Ref
+    Fill Text  input[name="author"]  Bibtex-Data-Author
+    Fill Text  input[name="title"]  Bibtex-Data-Title
+    Fill Text  input[name="year"]  2025
+    Fill Text  input[name="publisher"]  Bibtex-Data-Publisher
+    Fill Text  input[name="tag"]  Bibtex-Data-Tag
+    Click  input[type="submit"]
+    New Page  ${HOME_URL}/bibtex
+    ${bibtex}=  Get Text  css=code
     Should Contain  ${bibtex}  @book{Bibtex-Data-Ref,
     Should Contain  ${bibtex}  author = {Bibtex-Data-Author}
     Should Contain  ${bibtex}  title = {Bibtex-Data-Title}
