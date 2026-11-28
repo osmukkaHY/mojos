@@ -1,23 +1,39 @@
-<+DOCTYPE html>
+<!DOCTYPE html>
 
 <html>
 
 <body>
 
 <h2>Bibtex-exporttaus</h2>
-<code>
+<code style="white-space: pre-line;"id="bibtex-box">
   {% for book in book_bibtex %}
-    {{ book }} <br>
+    {{ book }}
   {% endfor %}
   {% for article in article_bibtex %}
-    {{ article }} <br>
+    {{ article }}
   {% endfor %}
   {% for inproceeding in inproceeding_bibtex %}
-    {{ inproceeding }} <br>
+    {{ inproceeding }}
   {% endfor %}
-</code>
+</code> <br>
+<button onClick="handleCopyButtonPress()" id="copy-button"></button> <br>
 <a href="/">Takaisin etusivulle</a>
 
 </body>
+
+<script>
+  function setCopyButtonText(text) {
+    document.getElementById("copy-button").innerHTML = text;
+  }
+
+  async function handleCopyButtonPress() {
+    const text = document.getElementById("bibtex-box").innerHTML;
+    await navigator.clipboard.writeText(text);
+    setCopyButtonText("Kopioitu!");
+    setTimeout(() => setCopyButtonText("Kopioi leikepöydälle"), 2000);
+  }
+
+  setCopyButtonText("Kopioi leikepöydälle");
+</script>
 
 </html>
